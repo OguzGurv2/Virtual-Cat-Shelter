@@ -1,0 +1,23 @@
+{
+  "name": "virtual-pet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OguzGurv2/Virtual-Pet.git"
+  },
+  "author": "up2157044",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OguzGurv2/Virtual-Pet/issues"
+  },
+  "homepage": "https://github.com/OguzGurv2/Virtual-Pet#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
