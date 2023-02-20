@@ -19,5 +19,16 @@
   "homepage": "https://github.com/OguzGurv2/Virtual-Pet#readme",
   "dependencies": {
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.34.0",
+    "eslint-config-portsoc": "github:portsoc/eslint-config-portsoc"
+  },
+  "eslintConfig": {
+    "extends": "portsoc",
+    "root": true,
+    "env": {
+      "browser": true
+    }
   }
 }

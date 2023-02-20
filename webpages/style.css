@@ -18,15 +18,38 @@ h1 {
     stroke-linejoin: round;
 }
 
-#eyes {
+.eyes {
     animation: blinking 5s infinite;
+
 }
 
 @keyframes blinking {
     0% { transform: scale(1, 1); }
-    5% { transform: scale(1, 0.1); }
-    10% { transform: scale(1, 1); }
+    80% { transform: scale(1, 1); }
+    90% { transform: scale(1, 0.1); }
     100% { transform: scale(1, 1); }
+}
+
+.sleepEyes {
+    animation: sleeping 3s;
+}
+
+@keyframes sleeping {
+    0% {transform: scale(1, 1);}
+    25% {transform: scale(1, 0.5);}
+    50% {transform: scale(1, 0.25);}
+    100% {transform: scale(1, 0.1);}
+}
+
+.openEyes {
+    animation: opening 3s;
+}
+
+@keyframes opening {
+    0% {transform: scale(1, 0.1);}
+    25% {transform: scale(1, 0.25);}
+    50% {transform: scale(1, 0.5);}
+    100% {transform: scale(1, 1);}
 }
 
 #frontlegs, #backlegs, #tail {
@@ -36,7 +59,7 @@ h1 {
 }
 
 
-.petButton {
+.button {
     width: 10em;
     padding-top: 1em;
     padding-bottom: 1em;
