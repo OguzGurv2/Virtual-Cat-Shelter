@@ -77,6 +77,9 @@ h1 {
     width: 60%;
     max-width: 660px;
 }
+:disabled {
+    background-color: dimgray;
+}
 
 .parent {
     display: flex;
@@ -91,6 +94,19 @@ h1 {
 
 #sleepBar, #cleanBar, #petBar, #feedBar {
     display: flex;
-    justify-content: space-between ;
-    display: flex;
+    justify-content: space-between;
+}
+
+#fall {
+    animation: fall 5s infinite;
+  }
+  
+@keyframes fall {
+    0% { transform-origin: 350px 290px; rotate: 0deg; }
+    50% { transform-origin: 350px 290px; rotate: -30deg; }
+    100% { transform-origin: 350px 290px; rotate: 0deg; }
+  }
+
+.hidden {
+    display: none;
 }
