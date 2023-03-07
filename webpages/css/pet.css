@@ -1,3 +1,16 @@
+#header {
+    font-family: 'Gloock-Regular';
+    background-color: #AA8B56;
+    color: #F0EBCE;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: #F0EBCE;
+}
+
 section {
     display: flex;
     text-align: center;
@@ -10,17 +23,43 @@ h1 {
     text-align: center;
     flex-direction: column;
     align-items: center;
-    color: darkgray;
 }
 
-#head, #body {
-    stroke: black;
-    stroke-linejoin: round;
+.parent {
+    display: flex;
+    align-items: center;
+}
+
+.child {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+}
+
+.button {
+    width: 10em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    border-color: darkgray;
+    border-radius: 10px;
+    justify-content: space-between;
+    color: white;
+    background-color: grey;
+}
+:disabled {
+    background-color: dimgray;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 60%;
+    max-width: 660px;
 }
 
 .eyes {
     animation: blinking 5s infinite;
-
 }
 
 @keyframes blinking {
@@ -52,45 +91,6 @@ h1 {
     100% {transform: scale(1, 1);}
 }
 
-#frontlegs, #backlegs, #tail {
-    stroke-linejoin:round;
-    stroke:black;
-    fill:grey;
-}
-
-
-.button {
-    width: 10em;
-    padding-top: 1em;
-    padding-bottom: 1em;
-    border-color: darkgray;
-    border-radius: 10px;
-    justify-content: space-between;
-    color: white;
-    background-color: grey;
-}
-
-.buttons {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 60%;
-    max-width: 660px;
-}
-:disabled {
-    background-color: dimgray;
-}
-
-.parent {
-    display: flex;
-    align-items: center;
-}
-
-.child {
-    display: flex;
-    flex-direction: column;
-    row-gap: 5px;
-}
 
 #sleepBar, #cleanBar, #petBar, #feedBar {
     display: flex;
@@ -109,4 +109,8 @@ h1 {
 
 .hidden {
     display: none;
+}
+
+#body {
+    transform-origin: 40% 75%;
 }

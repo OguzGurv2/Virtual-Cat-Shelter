@@ -1,58 +1,101 @@
 'use strict';
 
-import {hungerVP, cleanVP, sleepVP, happinessVP} from "./adjust.js";
-import {cleaning, sleeping} from "./buttons.js";
+const petName = document.getElementById('name');
+petName.addEventListener('keyup', checkName);
 
-window.addEventListener('load', addHandlers);
+const labels = document.querySelectorAll('label');
+labels.forEach(function (label) {
+  label.addEventListener('mouseover', displayCat);
+});
 
-function addHandlers() {
-  window.setInterval(controlFeels, 100);
-  document.querySelector('#feedBtn').addEventListener('click', () => { feels.hunger += 4; feels.clean -= 2;});
-  document.querySelector('#cleanBtn').addEventListener('click', cleaning);
-  document.querySelector('#sleepBtn').addEventListener('click', sleeping);
-  document.querySelector('#petBtn').addEventListener('click', () => { feels.pet += 2;});  
+labels.forEach(function (label) {
+  label.addEventListener('mouseout', returnDisplay);
+});
+
+const selectedCat = document.getElementById('selectedCat');
+fetch('./svgs/scottish.svg').then(r => r.text()).then(text => { selectedCat.innerHTML = text; });
+
+let checkedCat;
+
+function checkName() {
+  const nameBtn = document.querySelector('#nameBtn');
+  const nameAlert = document.querySelector('#nameAlert');
+  nameAlert.textContent = '';
+
+  if (petName) {
+    const nameVal = petName.value;
+
+    if (nameVal.length > 3) {
+      if (nameVal.length === 20) {
+        document.querySelector('#nameBtn').disabled = false;
+        nameAlert.textContent = "Your cat's name can be maxium of 20 characters long.";
+      }
+
+      if (checkSpecialChars(nameVal)) {
+        document.querySelector('#nameBtn').disabled = true;
+        nameAlert.textContent = "Your cat's name cannot contain special characters.";
+      } else {
+        document.querySelector('#nameBtn').disabled = false;
+        nameBtn.addEventListener('click', naming);
+      }
+    } else {
+      document.querySelector('#nameBtn').disabled = true;
+      nameAlert.textContent = "Your cat's name must be at least 4 characters long.";
+    }
+  }
 }
 
-const dirts = document.getElementById('dirts');
-fetch('svg/dirt.svg').then(r => r.text()).then(text => { dirts.innerHTML = text;});
-const toggle = document.querySelector('#sleepBtn');
+function checkSpecialChars(nameVal) {
+  const specialChars =
+    '[`!@#$%^&*()_+-=[]{};\':"\\|,.<>/?~]/';
+  return specialChars.split('').some((specialChar) => nameVal.includes(specialChar));
+}
 
-// creating feels
-const feels = {
-  hunger: 100,
-  clean: 100,
-  sleep: 100,
-  pet: 100,
-  dirtCount: 0
-  };
+function naming() {
+  localStorage.setItem('name', document.getElementById('name').value);
+  localStorage.setItem('path', checkedCat);
+  location.href = './pet.html';
+}
 
-
-//controls feels that are decreasing and controls them
-
-//controls hunger, clean, happiness
-  function controlFeels() {
-  //control hunger
-    if (feels.hunger > 105) {
-      feels.hunger = 105;
-    }
-    hungerVP();
-    feels.hunger = Math.max(80, -0.04 + feels.hunger);
-    
-    //control clean
-    cleanVP();
-    feels.clean = Math.max(0, -0.25 + feels.clean);
-    
-    //control pet
-    if (feels.pet > 100) {
-      feels.pet = 100;
-    }
-    feels.pet = Math.max(0, -1 + feels.pet);
-    happinessVP();
+function displayCat() {
+  const scottish = document.querySelector('label[for = scottish]');
+  const garfield = document.querySelector('label[for = garfield]');
+  const siamese = document.querySelector('label[for = siamese]');
+  const van = document.querySelector('label[for = van]');
+  if (scottish.matches(':hover')) {
+    fetch('./svgs/scottish.svg').then(r => r.text()).then(text => { selectedCat.innerHTML = text; });
   }
-  
-  function controlSleep() {
-    sleepVP();
-    feels.sleep = Math.max(0, -0.25 + feels.sleep);
+  if (garfield.matches(':hover')) {
+    fetch('./svgs/garfield.svg').then(r => r.text()).then(text => { selectedCat.innerHTML = text; });
   }
+  if (siamese.matches(':hover')) {
+    fetch('./svgs/siamese.svg').then(r => r.text()).then(text => { selectedCat.innerHTML = text; });
+  }
+  if (van.matches(':hover')) {
+    fetch('./svgs/van.svg').then(r => r.text()).then(text => { selectedCat.innerHTML = text; });
+  }
+}
 
-export { feels, toggle, controlSleep };
+function returnDisplay() {
+  const selectedScottish = document.querySelector('#scottish');
+  const selectedGarfield = document.querySelector('#garfield');
+  const selectedSiamese = document.querySelector('#siamese');
+  const selectedVan = document.querySelector('#van');
+
+  if (selectedScottish.matches(':checked')) {
+    fetch('./svgs/scottish.svg').then(r => r.text()).then(text => { selectedCat.innerHTML = text; });
+    checkedCat = './svgs/scottish.svg';
+  }
+  if (selectedGarfield.matches(':checked')) {
+    fetch('./svgs/garfield.svg').then(r => r.text()).then(text => { selectedCat.innerHTML = text; });
+    checkedCat = './svgs/garfield.svg';
+  }
+  if (selectedSiamese.matches(':checked')) {
+    fetch('./svgs/siamese.svg').then(r => r.text()).then(text => { selectedCat.innerHTML = text; });
+    checkedCat = './svgs/siamese.svg';
+  }
+  if (selectedVan.matches(':checked')) {
+    fetch('./svgs/van.svg').then(r => r.text()).then(text => { selectedCat.innerHTML = text; });
+    checkedCat = './svgs/van.svg';
+  }
+}

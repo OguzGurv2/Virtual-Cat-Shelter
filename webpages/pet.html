@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Virtual-Pet</title>
+
+<link rel="stylesheet" href="css/pet.css">
+<script type="module" src="static/pet.js"></script>
+
+<section id="header">
+    <h1 id="catName"></h1>
+</section>
+
+<section>
+    <div class="parent">
+        <svg id="svg" viewBox="0 0 250 250" width="250" height="250">
+            <g id="cat"></g>
+            <g id="dirts"></g>
+            <g id="original"></g>
+        </svg>
+        <div class="child">
+            <label for="feedBar">Hunger</label>
+            <meter class="bar" id="hungerBar" value="100" min="80" max="100"></meter>
+            <label for="cleanBar">Clean</label>
+            <meter class="bar" id="cleanBar" value="100" min="0" max="100"></meter>
+            <label for="sleepBar">Sleep</label>
+            <meter class="bar" id="sleepBar" value="100" min="0" max="100"></meter>
+            <p>Happiness: <br><a id="happiness" style="font-weight: bold;">Ecstatic</a></p>
+        </div>
+
+    </div>
+    <div class="buttons">
+        <button class="button" id="feedBtn">Feed</button>
+        <button class="button" id="cleanBtn">Clean</button>
+        <button class="button" id="sleepBtn" value="wakeup">Sleep</button>
+        <button class="button" id="petBtn">Pet</button>
+    </div>
+</section>

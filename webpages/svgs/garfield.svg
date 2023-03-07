@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="250" height="250">
+    <ellipse id="shadow" rx="85" ry="15" cx="250" cy="302.5" fill="#c5c5c5" style="opacity: 0.5" transform="translate(-150, -75)"/>
+    <g id="tail" fill="#ff9a00" stroke-linejoin="round" stroke="black" transform="translate(-150, -75)">
+        <path d="M300,290 L350,290 C350,290 355,285 350,280 L350,280 300,280"/>
+        <path d="M350,290 L360,290 C360,290 380,285 360,280 L350,280" fill="#ff7400" id="fall"/>
+    </g>
+        <rect id="tail-stripe" width="10" height="9" x="310" y="280.5" fill="#ff7400" opacity="0.6"/>
+        <use href="#tail-stripe" transform="translate(20)"/>
+        <use href="#tail-stripe" transform="translate(-20)"/>
+
+    <g id="backlegs" fill="#ff9a00" stroke-linejoin="round" stroke="black" transform="translate(-150, -75)">
+        <path id="right-backleg" d="M210,240 C200,240 170,265 200,290 L185,290 A 10 40 90 0 0 185,300 L185,300 225,300 225,280"/>
+        <use href="#right-backleg" transform="scale(-1, 1) translate(-500)"/>
+    </g>
+    <path id="foot-stripe" d="M200.5,290.5 L184.5,290.5 A 10 40 90 0 0 184.5,299.5 L200.5,299.5" fill="#ff7400" opacity="0.6" transform="translate(-150, -75)"/>
+    <use href="#foot-stripe" transform="scale(-1, 1) translate(-200)"/>
+    
+    <ellipse id="body" cx="100" cy="160" rx="55" ry="70" fill="#ff9a00" stroke-linejoin="round" stroke="black"/>
+    <ellipse id="body-stripe" cx="100" cy="180" rx="40" ry="50" fill="#ff7400" opacity="0.6"/>
+
+    <g id="frontlegs" fill="#ff9a00" stroke-linejoin="round" stroke="black" transform="translate(-150, -75)">
+        <path id="right-frontleg" d="M240,250 L240,310 C240,310 190,320 225,300 L225,300 225,245"/>
+        <use href="#right-frontleg" transform="scale(-1, 1) translate(-500)"/>
+    </g>
+    <path id="leg-stripe" d="M225.5,244.9 L225.5,260 239.5,260 239.5,249.8" fill="#ff7400" opacity="0.6" transform="translate(-150, -75)"/>
+    <use href="#leg-stripe" transform="scale(-1, 1) translate(-200)"/>
+
+
+    <g id="head" transform="translate(-150, -75)">
+        <g id="ears" fill="#ff9a00" stroke-linejoin="round" stroke="black">
+            <g id="right-ear">
+            <path id="right-ear" d="M200,90 L300,150 200,150 200,90"/>
+            </g>
+            <use href="#right-ear" transform="scale(-1,1) translate(-500)"/>
+        </g>
+        <path id="ear-shadow" d="M202.5,120 L202.5,95 222.5,106.25 202.5,120" fill="#ff7400" style="opacity: 0.6" />
+        <use href="#ear-shadow" transform="scale(-1,1) translate(-500)"/>
+        <circle cx="250" cy="150" r="50" fill="#ff9a00" stroke-linejoin="round" stroke="black"/>
+        <ellipse id="nose" cx="250" cy="160" rx="7.5" ry="5" fill="rgb(177,114,97)" stroke-linejoin="round" stroke="black"/>
+        <g id="mouth">
+            <path id="right-mouth" d="M250,165 C245,180 235,180 227.5,170" stroke="black" fill="transparent"/>
+            <use href="#right-mouth" transform="scale(-1,1) translate(-500)"/>
+        </g>
+        <defs>
+            <g id="eyes" class="eyes" fill="#11823b">
+                <circle id="eyes" cx="225"  r="7.5"/>
+                <circle id="eyes" cx="275" r="7.5"/>
+            </g>
+        </defs>
+        <use href="#eyes" y="145"/>
+    </g>
+</svg>
