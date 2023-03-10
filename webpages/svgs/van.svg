@@ -18,25 +18,45 @@
         <use href="#right-frontleg" transform="scale(-1, 1) translate(-500)"/>
     </g>
 
-    <g id="head" transform="translate(-150, -75)">
+    <g id="head">
         <g id="ears" fill="#F1EFE5" stroke-linejoin="round" stroke="black">
-            <path id="right-ear" d="M200,90 L300,150 200,150 200,90"/>
-            <use href="#right-ear" transform="scale(-1,1) translate(-500)"/>
+            <path id="right-ear" d="M50,15 L150,75 50,75 50,15"/>
+            <use href="#right-ear" transform="scale(-1,1) translate(-200)"/>
         </g>
-        <path id="ear-shadow" d="M202.5,120 L202.5,95 222.5,106.25 202.5,120" fill="#CDA5A9" style="opacity: 0.6" />
-        <use href="#ear-shadow" transform="scale(-1,1) translate(-500)"/>
-        <circle cx="250" cy="150" r="50" fill="#F1EFE5" stroke-linejoin="round" stroke="black"/>
-        <ellipse id="nose" cx="250" cy="160" rx="7.5" ry="5" fill="rgb(177,114,97)" stroke-linejoin="round" stroke="black"/>
+        <path id="ear-shadow" d="M52.5,45 L52.5,20 72.5,31.25 52.5,45" fill="#CDA5A9" style="opacity: 0.6" />
+        <use href="#ear-shadow" transform="scale(-1,1) translate(-200)"/>
+
+        <circle  cx="100" cy="75" r="50" fill="#F1EFE5" stroke-linejoin="round" stroke="black"/>
+        <ellipse id="nose" cx="100" cy="85" rx="7.5" ry="5" fill="rgb(177,114,97)" stroke-linejoin="round" stroke="black"/>
+
         <g id="mouth">
-            <path id="right-mouth" d="M250,165 C245,180 235,180 227.5,170" stroke="black" fill="transparent"/>
-            <use href="#right-mouth" transform="scale(-1,1) translate(-500)"/>
+            <path id="right-mouth" d="M100,90 C95,105 85,105 77.5,95" stroke="black" fill="transparent"/>
+            <use href="#right-mouth" transform="scale(-1,1) translate(-200)"/>
         </g>
         <defs>
-            <g id="eyes" class="eyes">
-                <circle id="eyes" cx="225"  r="7.5" fill="#969DA7"/>
-                <circle id="eyes" cx="275" r="7.5" fill="#B6CDBF"/>
+            <g id="eyes" class="blink">
+                <circle id="eyes" cx="75"  r="7.5" fill="#969DA7"/>
+                <circle id="eyes" cx="125" r="7.5" fill="#B6CDBF"/>
             </g>
         </defs>
-        <use href="#eyes" y="145"/>
+        <use href="#eyes" y="70"/>
+        <g id="dead-eye" class="hidden">
+            <rect id="left" x="73.125" y="62.5" width="3.5" height="15" fill="#969DA7"/>
+            <rect id="right" x="73.125" y="62.5" width="3.5" height="15" fill="#969DA7"/>
+            <rect id="left" x="123.125" y="62.5" width="3.5" height="15" fill="#B6CDBF"/>
+            <rect id="right" x="123.125" y="62.5" width="3.5" height="15" fill="#B6CDBF"/>
+        </g>
     </g>
+    <style>
+        #left {
+            transform-box: fill-box;
+            transform-origin: center;
+            rotate: 45deg;
+        }
+        #right {
+            transform-box: fill-box;
+            transform-origin: center;
+            rotate: 135deg;
+        }
+    </style>
 </svg>

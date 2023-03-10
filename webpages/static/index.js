@@ -1,8 +1,15 @@
 'use strict';
 
+// index page functions
+
+// defining the cat breed and name
+let selectedCat;
+
 const petName = document.getElementById('name');
 petName.addEventListener('keyup', checkName);
 
+// calling each label a mouseover and mouseout event
+// for displaying cat breeds
 const labels = document.querySelectorAll('label');
 labels.forEach(function (label) {
   label.addEventListener('mouseover', displayCat);
@@ -12,11 +19,11 @@ labels.forEach(function (label) {
   label.addEventListener('mouseout', returnDisplay);
 });
 
-const selectedCat = document.getElementById('selectedCat');
-fetch('./svgs/scottish.svg').then(r => r.text()).then(text => { selectedCat.innerHTML = text; });
+// defining the cat display element and starting cat breed
+const hoveredCat = document.getElementById('hoveredCat');
+fetch('./svgs/scottish.svg').then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
 
-let checkedCat;
-
+// checking the name is acceptible with addtional functions
 function checkName() {
   const nameBtn = document.querySelector('#nameBtn');
   const nameAlert = document.querySelector('#nameAlert');
@@ -51,51 +58,54 @@ function checkSpecialChars(nameVal) {
   return specialChars.split('').some((specialChar) => nameVal.includes(specialChar));
 }
 
+// naming buttons function for datas and changing the webpage
 function naming() {
   localStorage.setItem('name', document.getElementById('name').value);
-  localStorage.setItem('path', checkedCat);
+  localStorage.setItem('path', selectedCat);
   location.href = './pet.html';
 }
 
+// displaying cat function with hover
 function displayCat() {
   const scottish = document.querySelector('label[for = scottish]');
   const garfield = document.querySelector('label[for = garfield]');
   const siamese = document.querySelector('label[for = siamese]');
   const van = document.querySelector('label[for = van]');
   if (scottish.matches(':hover')) {
-    fetch('./svgs/scottish.svg').then(r => r.text()).then(text => { selectedCat.innerHTML = text; });
+    fetch('./svgs/scottish.svg').then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
   }
   if (garfield.matches(':hover')) {
-    fetch('./svgs/garfield.svg').then(r => r.text()).then(text => { selectedCat.innerHTML = text; });
+    fetch('./svgs/garfield.svg').then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
   }
   if (siamese.matches(':hover')) {
-    fetch('./svgs/siamese.svg').then(r => r.text()).then(text => { selectedCat.innerHTML = text; });
+    fetch('./svgs/siamese.svg').then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
   }
   if (van.matches(':hover')) {
-    fetch('./svgs/van.svg').then(r => r.text()).then(text => { selectedCat.innerHTML = text; });
+    fetch('./svgs/van.svg').then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
   }
 }
 
+// returning the checked(clicked) cat breed for displaying
 function returnDisplay() {
-  const selectedScottish = document.querySelector('#scottish');
-  const selectedGarfield = document.querySelector('#garfield');
-  const selectedSiamese = document.querySelector('#siamese');
-  const selectedVan = document.querySelector('#van');
+  const hoveredScottish = document.querySelector('#scottish');
+  const hoveredGarfield = document.querySelector('#garfield');
+  const hoveredSiamese = document.querySelector('#siamese');
+  const hoveredVan = document.querySelector('#van');
 
-  if (selectedScottish.matches(':checked')) {
-    fetch('./svgs/scottish.svg').then(r => r.text()).then(text => { selectedCat.innerHTML = text; });
-    checkedCat = './svgs/scottish.svg';
+  if (hoveredScottish.matches(':checked')) {
+    fetch('./svgs/scottish.svg').then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
+    selectedCat = './svgs/scottish.svg';
   }
-  if (selectedGarfield.matches(':checked')) {
-    fetch('./svgs/garfield.svg').then(r => r.text()).then(text => { selectedCat.innerHTML = text; });
-    checkedCat = './svgs/garfield.svg';
+  if (hoveredGarfield.matches(':checked')) {
+    fetch('./svgs/garfield.svg').then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
+    selectedCat = './svgs/garfield.svg';
   }
-  if (selectedSiamese.matches(':checked')) {
-    fetch('./svgs/siamese.svg').then(r => r.text()).then(text => { selectedCat.innerHTML = text; });
-    checkedCat = './svgs/siamese.svg';
+  if (hoveredSiamese.matches(':checked')) {
+    fetch('./svgs/siamese.svg').then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
+    selectedCat = './svgs/siamese.svg';
   }
-  if (selectedVan.matches(':checked')) {
-    fetch('./svgs/van.svg').then(r => r.text()).then(text => { selectedCat.innerHTML = text; });
-    checkedCat = './svgs/van.svg';
+  if (hoveredVan.matches(':checked')) {
+    fetch('./svgs/van.svg').then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
+    selectedCat = './svgs/van.svg';
   }
 }

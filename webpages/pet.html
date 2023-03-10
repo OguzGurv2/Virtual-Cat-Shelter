@@ -5,32 +5,44 @@
 <link rel="stylesheet" href="css/pet.css">
 <script type="module" src="static/pet.js"></script>
 
-<section id="header">
-    <h1 id="catName"></h1>
-</section>
+<section id="dimmer">
+    <div id="header">
+        <h1 id="catName"></h1>
+    </div>
 
-<section>
-    <div class="parent">
-        <svg id="svg" viewBox="0 0 250 250" width="250" height="250">
+    <div id="death-screen" class="hidden">
+        <h1>We lost your virtual pet in our system 😔</h1>
+        <p>Reason: <a id="death-reason"></a></p>
+        <p>Times-lived: <a id="times-lived"></a></p>
+        <button id="turn-home">Adopt a new cat!</button>
+    </div>
+
+    <g class="parent">
+        <svg id="svg" class="child" viewBox="0 0 250 250" width="250" height="250">
             <g id="cat"></g>
             <g id="dirts"></g>
             <g id="original"></g>
         </svg>
-        <div class="child">
-            <label for="feedBar">Hunger</label>
-            <meter class="bar" id="hungerBar" value="100" min="80" max="100"></meter>
-            <label for="cleanBar">Clean</label>
-            <meter class="bar" id="cleanBar" value="100" min="0" max="100"></meter>
-            <label for="sleepBar">Sleep</label>
-            <meter class="bar" id="sleepBar" value="100" min="0" max="100"></meter>
-            <p>Happiness: <br><a id="happiness" style="font-weight: bold;">Ecstatic</a></p>
-        </div>
+        <g class="child">
+            <g id="interface">
+                <div class="bar">
+                    <label for="feedBar">Hunger</label>
+                    <meter  id="hungerBar" value="100" min="80" max="100" low="85" high="95" optimum="96"></meter>
+                    <label for="cleanBar">Clean</label>
+                    <meter  id="cleanBar" value="100" min="0" max="100" low="25" high="75" optimum="80"></meter>
+                    <label for="sleepBar">Sleep</label>
+                    <meter id="sleepBar" value="100" min="0" max="100" low="25" high="75" optimum="80"></meter>
+                </div>
+                <p>Happiness:<a id="happiness" style="font-weight: bold;">Ecstatic</a></p>
+                <p>Age:<a id="age">Newborn</a></p>
+            </g>
+        </g>
+    </g>
 
-    </div>
-    <div class="buttons">
+    <g class="buttons">
         <button class="button" id="feedBtn">Feed</button>
         <button class="button" id="cleanBtn">Clean</button>
         <button class="button" id="sleepBtn" value="wakeup">Sleep</button>
         <button class="button" id="petBtn">Pet</button>
-    </div>
+    </g>
 </section>
