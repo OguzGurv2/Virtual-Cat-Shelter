@@ -47,7 +47,7 @@ section {
     color: #F0EBCE;
 }
 
-#nameAlert {
+#alertUI {
     margin-top: 0px;
     margin-bottom: 0px;
     color: #FF7B54;
@@ -115,11 +115,10 @@ label {
 }
 
 .parent {
-    flex-direction: row;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    margin-inline: 0px;
+    display: grid;
+    grid-template-columns: repeat(2, 550px);
+    grid-auto-rows: minmax(250px, auto);
+    gap: 50px;
 }
 
 .child {
@@ -131,6 +130,26 @@ label {
     flex-direction: column;
 }
 
+.parentUI {
+    justify-content: center;
+    display: flex;
+    padding-top: 0px;
+    display: grid;
+    grid-template-columns: repeat(2, 200px);
+}
+
+.childUI {
+    padding-top: 0px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
 #body {
     transform-origin: 40% 75%;
+}
+
+#name {
+    margin-bottom: 5px;
 }

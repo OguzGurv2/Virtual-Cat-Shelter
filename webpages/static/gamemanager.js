@@ -1,19 +1,47 @@
 'use strict';
 
-import { feels, controlSleep, disableBtns } from './pet.js';
-import { sleepVP, buttons } from './adjust.js';
+import { catStats, btnID } from './globals.js';
+import { controlSleep, disableBtns } from './pet.js';
+import { sleepVP, buttons } from './anims.js';
+
+setInterval(restart, 1000);
 
 // button functions
 
-// play again button
-document.querySelector('#turn-home').addEventListener('click', () => { location.href = './index.html';});
+// button controling for spamming buttons
+
+function controlButtons() {
+  buttons.forEach(function event(button) {
+    button.addEventListener('click', () => {
+      const el = button.id;
+      countingClicks(el);
+    });
+  });
+}
+
+function countingClicks(el) {
+  for (let i = 0; i < buttons.length; i++) {
+    if (Object.values(btnID)[i] === 4) {
+      buttons[i].disabled = true;
+      setTimeout(() => { buttons[i].disabled = false; }, 1000);
+    }
+  }
+  btnID[el]++;
+}
+
+function restart() {
+  for (let i = 0; i < buttons.length; i++) {
+    const key = Object.keys(btnID)[i];
+    btnID[key] = 0;
+  }
+}
 
 // cleaning button
 function cleaning() {
-  feels.clean += 10;
-  feels.pet -= 5;
-  if (feels.dirtCount > 0) {
-    feels.dirtCount = feels.dirtCount - 1;
+  catStats.clean += 10;
+  catStats.pet -= 5;
+  if (catStats.dirtCount >= 1) {
+    catStats.dirtCount = catStats.dirtCount - 1;
   }
   const lastDirt = document.getElementById('clone');
   if (lastDirt) {
@@ -66,12 +94,11 @@ function sleeping() {
 
 // handles cat's sleeping value while button is on
 function handleSleep() {
-  if (feels.sleep > 110) {
+  if (catStats.sleep === 105) {
     sleeping();
-    feels.sleep = 110;
   }
   sleepVP();
-  feels.sleep = feels.sleep + 2;
+  catStats.sleep = catStats.sleep + 2;
 }
 
-export { cleaning, sleeping, handleSleep, awake };
+export { cleaning, sleeping, handleSleep, awake, controlButtons };

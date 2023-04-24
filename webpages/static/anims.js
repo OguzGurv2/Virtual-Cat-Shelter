@@ -1,52 +1,52 @@
 'use strict';
 
-import { feels, time, hasClass, disableBtns, feelControl, deathScreen  } from './pet.js';
-import { awake } from './petbuttons.js';
+import { catStats, reasons, startTime, rkeys, skeys } from './globals.js';
+import { hasClass, disableBtns, deathScreen, age, feelControl, time } from './pet.js';
+import { awake } from './gamemanager.js';
 
 // functions that adjusts stats and some animations to cat
 
 // some global elems that used by other js files
-const buttons = document.querySelectorAll("button"); 
+const buttons = document.querySelectorAll('.button');
 const vpHappiness = document.getElementById('happiness');
 
 // adjusts feeding to the cat and stats
 function hungerVP() {
   const body = document.querySelector('#body');
   const hungerBar = document.getElementById('hungerBar');
-  body.setAttribute('transform', ` scale(${feels.hunger / 100})`);
-  hungerBar.value = feels.hunger;
+  body.setAttribute('transform', ` scale(${catStats.hunger / 100})`);
+  hungerBar.value = catStats.hunger;
 }
 
 // adjusts dirts to cat and stats
 function cleanVP() {
-  if (feels.clean === 75) {
-    feels.dirtCount++;
+  if (catStats.clean < 75 && catStats.dirtCount === 0) {
+    catStats.dirtCount++;
     addDirt();
-  } else if (feels.clean === 65 && feels.dirtCount === 1) {
-    feels.dirtCount++;
+  } else if (catStats.clean < 65 && catStats.dirtCount === 1) {
+    catStats.dirtCount++;
     addDirt();
-  } else if (feels.clean === 55 && feels.dirtCount === 2) {
-    feels.dirtCount++;
+  } else if (catStats.clean < 55 && catStats.dirtCount === 2) {
+    catStats.dirtCount++;
     addDirt();
-  } else if (feels.clean === 45 && feels.dirtCount === 3) {
-    feels.dirtCount++;
+  } else if (catStats.clean < 45 && catStats.dirtCount === 3) {
+    catStats.dirtCount++;
     addDirt();
-  } else if (feels.clean === 35 && feels.dirtCount === 4) {
-    feels.dirtCount++;
+  } else if (catStats.clean < 35 && catStats.dirtCount === 4) {
+    catStats.dirtCount++;
     addDirt();
   }
-  
-  if (feels.clean > 100) {
-    feels.clean = 100;
+  if (catStats.clean > 100) {
+    catStats.clean = 100;
   }
-  
+
   const cleanBar = document.getElementById('cleanBar');
-  cleanBar.value = feels.clean;
+  cleanBar.value = catStats.clean;
 }
 
 // additional adding dirt function
 function addDirt() {
-  const group = document.getElementById('dirts');
+  const svg = document.querySelector('svg');
   const dirt = document.getElementById('dirt');
   const newDirt = dirt.cloneNode(true);
   newDirt.classList.remove('hidden');
@@ -54,20 +54,20 @@ function addDirt() {
   newDirt.setAttribute('transform', `translate(${Math.random() * (100) + 25}, ${Math.random() * (75) + 100})`);
   newDirt.setAttribute('fill', '#6e5001');
   newDirt.style.opacity = '60%';
-  group.appendChild(newDirt);
+  svg.appendChild(newDirt);
 }
 
 // since sleeping anims are done with toggling,
 // this function only adjusts stats to the interface
 function sleepVP() {
   const sleepBar = document.getElementById('sleepBar');
-  sleepBar.value = feels.sleep;
+  sleepBar.value = catStats.sleep;
 }
 
 // adjusts cat's tail anim depeding on cat's happiness
 function happinessVP() {
-  const hunger = (feels.hunger - 80)*5;
-  const happiness = (feels.pet + feels.clean + hunger + feels.sleep) / 4;
+  const hunger = (catStats.hunger - 80) * 5;
+  const happiness = (catStats.pet + catStats.clean + hunger + catStats.sleep) / 4;
   const tail = document.getElementById('fall');
 
   if (happiness > 80) {
@@ -87,32 +87,34 @@ function happinessVP() {
     vpHappiness.textContent = 'Sad';
     tail.style['-webkit-animation-duration'] = 4 + 's';
   }
-  
-    if (happiness === 0) {
-      feels.isAlive == false;
-      death();
-      return;
-    }
+  if (happiness === 0) {
+    death();
+  }
 }
 
 // adjusts death screen and stops all other anims
 function death() {
+  if (reasons.infection === 5 || reasons.starve === 5 || reasons.sleeplessness === 5 || catStats.isAlive === false) {
+    if (catStats.isAlive === true) {
+      catStats.isAlive = false;
+    }
 
-  if (feels.infection === 5 || feels.starve === 5 || feels.sleeplessness === 5 || feels.isAlive == false) {
     clearInterval(time);
     disableBtns(buttons);
     clearInterval(awake);
     clearInterval(feelControl);
-    feels.isAlive == false;
+    clearInterval(age);
     vpHappiness.textContent = '💀';
     const tail = document.getElementById('fall');
     tail.style.animationPlayState = 'paused';
-    
-    const eyes = document.getElementById('eyes'); 
-    const classes= ['blink', 'sleeping', 'opening'];
-    for(var i = 0, j = classes.length; i < j; i++) {
-      if(hasClass(eyes, classes[i])) {
-        var eyeClass = classes[i];
+
+    let eyeClass;
+    const eyes = document.getElementById('eyes');
+    const classes = ['blink', 'sleeping', 'opening'];
+
+    for (let i = 0, j = classes.length; i < j; i++) {
+      if (hasClass(eyes, classes[i])) {
+        eyeClass = classes[i];
         break;
       }
     }
@@ -121,25 +123,38 @@ function death() {
     document.querySelector('#dead-eye').classList.remove('hidden');
     document.querySelector('#dimmer').classList.add('dimmer');
     document.querySelector('#death-screen').classList.replace('hidden', 'death-screen');
-    document.querySelector('#turn-home').disabled = false;
     deathScreen();
     return;
   }
-  if (feels.clean === 0) {
-    feels.infection++;
-  } else {
-    feels.infection = 0; 
-  }
-  if (feels.hunger === 0) {
-    feels.starve++;
-  } else {
-    feels.starve = 0;
-  }
-  if (feels.sleeplessness === 0) {
-    feels.sleeplessness++;
-  } else {
-    feels.sleeplessness = 0;
+
+  for (let i = 0; i < 3; i++) {
+    if (catStats[skeys[i]] === 0) {
+      reasons[rkeys[i]]++;
+    }
   }
 }
 
-export { hungerVP, cleanVP, sleepVP, happinessVP, buttons, death };
+function adjustAge() {
+  const endTime = Date.now();
+  const age = document.querySelector('#age');
+  const secs = Math.round((endTime - startTime) / 1000);
+  const mins = secs / 60;
+
+  if (Math.floor(mins) === 5) {
+    age.textContent = 'Kitten';
+  }
+  if (Math.floor(mins) === 15) {
+    age.textContent = 'Junior';
+  }
+  if (Math.floor(mins) === 35) {
+    age.textContent = 'Adult';
+  }
+  if (Math.floor(mins) === 55) {
+    age.textContent = 'Senior';
+  }
+  if (Math.floor(mins) === 95) {
+    age.textContent = 'Super Senior';
+  }
+}
+
+export { hungerVP, cleanVP, sleepVP, happinessVP, buttons, death, adjustAge };

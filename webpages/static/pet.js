@@ -1,139 +1,123 @@
 'use strict';
 
-import { hungerVP, cleanVP, sleepVP, happinessVP, death } from './adjust.js';
-import { cleaning, sleeping } from './petbuttons.js';
-
-// base pet functions
-
-// getting the time that cat created and checking that cat is alive
-var startTime = '';
-window.addEventListener('load', () => { startTime = Date.now(); });
-const time = window.setInterval(timesLived, 1000);
-const feelControl = window.setInterval(controlFeels, 100);
-window.setInterval(death, 1000);
+import { catStats, reasons, reasonExp, timer, startTime, skeys } from './globals.js';
+import { hungerVP, cleanVP, sleepVP, happinessVP, adjustAge, death } from './anims.js';
+import { cleaning, sleeping, controlButtons } from './gamemanager.js';
 
 // setting handlers for other things such as btns...
-window.addEventListener('load', addHandlers);
+window.setInterval(cleanVP, 100);
+window.setInterval(death, 1000);
+const time = window.setInterval(timesLived, 1000);
+const age = window.setInterval(adjustAge, 1000);
+const feelControl = window.setInterval(controlStats, 100);
+window.addEventListener('load', handlePage);
+window.addEventListener('load', controlButtons);
 
-function addHandlers() {
-  document.querySelector('#feedBtn').addEventListener('click', () => { feels.hunger += 4; feels.clean -= 2; });
+// base pet functions
+export function handlePage() {
+  // handles buttons
+  document.querySelector('#feedBtn').addEventListener('click', () => { catStats.hunger += 4; catStats.clean -= 2; });
   document.querySelector('#cleanBtn').addEventListener('click', cleaning);
   document.querySelector('#sleepBtn').addEventListener('click', sleeping);
-  document.querySelector('#petBtn').addEventListener('click', () => { feels.pet += 2; });  
+  document.querySelector('#petBtn').addEventListener('click', () => { catStats.pet += 2; });
 
+  // handles the data
   const petName = document.querySelector('#catName');
   const name = localStorage.getItem('name');
   petName.textContent = name.toUpperCase();
-  
   const cat = document.querySelector('#cat');
   const path = localStorage.getItem('path');
   fetch(path).then(r => r.text()).then(text => { cat.innerHTML = text; });
-  
   const dirts = document.querySelector('#dirts');
   fetch('./svgs/dirt.svg').then(r => r.text()).then(text => { dirts.innerHTML = text; });
 }
 
-// creating seconds, minutes, and hours to calculate how long that cat lived  
-var secs = '';
-var mins = '';
-var hrs = '';
-const timer = document.querySelector('#times-lived');
-
-// creating feels
-const feels = {
-  hunger: 100,
-  clean: 100,
-  sleep: 100,
-  pet: 100,
-  dirtCount: 0,
-  isAlive: true,
-  starve: 0,
-  infection: 0,
-  sleeplessness: 0
-};
-
 // controls decreasing and increasing of hunger, sleep, clean, and happiness over time
-function controlFeels() {
-  // control hunger
-  if (feels.hunger > 105) {
-    feels.hunger = 105;
+export function controlStats() {
+  for (let i = 0; i < 4; i++) {
+    if (catStats[skeys[i]] > 105) {
+      catStats[skeys[i]] = 105;
+    }
   }
+  if (catStats.pet > 105) {
+    catStats.pet = 105;
+  }
+
+  catStats.hunger = Math.max(80, -0.04 + catStats.hunger);
+  catStats.clean = Math.max(0, -0.25 + catStats.clean);
+  catStats.pet = Math.max(0, -1 + catStats.pet);
+
   hungerVP();
-  feels.hunger = Math.max(80, -0.04 + feels.hunger);
-  
-  // control clean
   cleanVP();
-  feels.clean = Math.max(0, -0.25 + feels.clean);
-  
-  // control pet
-  if (feels.pet > 100) {
-    feels.pet = 100;
-  }
-  feels.pet = Math.max(0, -1 + feels.pet);
   happinessVP();
 }
 
 // control sleep
-function controlSleep() {
+export function controlSleep() {
+  catStats.sleep = Math.max(0, -0.125 + catStats.sleep);
   sleepVP();
-  feels.sleep = Math.max(0, -0.125 + feels.sleep);
 }
 
 // checks the time that cat died
-function timesLived() {
+
+export function timesLived() {
+  let secs = '';
+  let mins = '';
+  let hrs = '';
+
   const endTime = Date.now();
-  secs = Math.round((endTime-startTime)/1000);
-  mins = secs/60;
-  hrs = mins/60;
-  
-  if (feels.isAlive == false) {
+  secs = Math.round((endTime - startTime) / 1000);
+  mins = secs / 60;
+  hrs = mins / 60;
+
+  if (catStats.isAlive === false) {
     clearInterval(time);
     return;
   }
   if (secs < 60) {
     timer.textContent = secs + 's';
-  }
-  else if (secs <3600) {
-    secs = Math.round((mins - Math.floor(mins))*60);
+  } else if (secs < 3600) {
+    secs = Math.round((mins - Math.floor(mins)) * 60);
     timer.textContent = Math.floor(mins) + 'm ' + secs + 's';
-  }
-  else if (secs < 74400) {
-    secs = Math.round((mins - Math.floor(mins))*60);
-    mins = Math.round((hrs - Math.floor(hrs))*60);
+  } else if (secs < 74400) {
+    secs = Math.round((mins - Math.floor(mins)) * 60);
+    mins = Math.round((hrs - Math.floor(hrs)) * 60);
     timer.textContent = Math.floor(hrs) + 'hrs ' + Math.floor(mins) + 'm ';
   }
-  
 }
 
 // gets the data for the death screen, reason of death etc.
 function deathScreen() {
   const deathReason = document.querySelector('#death-reason');
-
-  if(feels.infection === 5) {
-    deathReason.textContent = 'Lack of hygiene';
-    return;
-  }
-  if(feels.starve === 5) {
-    deathReason.textContent = 'Starving';
-    return;
-  }
-  if(feels.sleeplessness === 5) {
-    deathReason.textContent = 'Lack of sleep';
+  // play again button
+  document.querySelector('#turn-home').addEventListener('click', () => { location.href = './index.html'; });
+  if (checkReason) {
+    deathReason.textContent = reasonExp[checkReason()];
     return;
   }
 
   deathReason.textContent = 'Neglecting';
 }
 
-// other substiantial functions that helps all the game system
-function hasClass(element, clsName) {
-  return (' ' + element.getAttribute("class") + ' ').indexOf(' ' + clsName+ ' ') > -1;
+// checks death reason
+function checkReason() {
+  for (let i = 0; i < reasonExp.length; i++) {
+    if (Object.values(reasons)[i] === 5) {
+      return i - 1;
+    }
+  }
 }
 
+// substiantial function that helps the stats system
+function hasClass(element, clsName) {
+  return (' ' + element.getAttribute('class') + ' ').indexOf(' ' + clsName + ' ') > -1;
+}
+
+// disables buttons in case of spamming
 function disableBtns(buttons) {
-  for(var i = 0, l = buttons.length; i < l; i++) {   
+  for (let i = 0, l = buttons.length; i < l; i++) {
     buttons[i].disabled = true;
   }
 }
 
-export { feels, controlSleep, controlFeels, time, hasClass, disableBtns, feelControl, deathScreen };
+export { hasClass, disableBtns, deathScreen, age, feelControl, time };

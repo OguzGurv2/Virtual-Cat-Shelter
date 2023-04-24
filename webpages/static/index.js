@@ -1,16 +1,26 @@
 'use strict';
 
+import { breedPaths } from './globals.js';
+
 // index page functions
 
-// defining the cat breed and name
+// defining the selected cat, breeds, and cat name
+window.addEventListener('load', handlePage);
+
+function handlePage() {
+  document.getElementById('name').addEventListener('keyup', checkName);
+}
+
 let selectedCat;
 
-const petName = document.getElementById('name');
-petName.addEventListener('keyup', checkName);
+const startBtn = document.querySelector('#startBtn');
+const alertUI = document.querySelector('#alertUI');
 
 // calling each label a mouseover and mouseout event
 // for displaying cat breeds
+const inputs = document.querySelectorAll('input[type = radio]');
 const labels = document.querySelectorAll('label');
+
 labels.forEach(function (label) {
   label.addEventListener('mouseover', displayCat);
 });
@@ -23,89 +33,82 @@ labels.forEach(function (label) {
 const hoveredCat = document.getElementById('hoveredCat');
 fetch('./svgs/scottish.svg').then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
 
-// checking the name is acceptible with addtional functions
+// checking the name is acceptible
 function checkName() {
-  const nameBtn = document.querySelector('#nameBtn');
-  const nameAlert = document.querySelector('#nameAlert');
-  nameAlert.textContent = '';
+  const petName = document.getElementById('name');
+  alertUI.textContent = '';
 
   if (petName) {
     const nameVal = petName.value;
 
     if (nameVal.length > 3) {
       if (nameVal.length === 20) {
-        document.querySelector('#nameBtn').disabled = false;
-        nameAlert.textContent = "Your cat's name can be maxium of 20 characters long.";
+        startBtn.disabled = false;
+        alertUI.textContent = "Your cat's name can be maximum of 20 characters long.";
       }
 
       if (checkSpecialChars(nameVal)) {
-        document.querySelector('#nameBtn').disabled = true;
-        nameAlert.textContent = "Your cat's name cannot contain special characters.";
+        startBtn.disabled = true;
+        alertUI.textContent = "Your cat's name cannot contain special characters.";
       } else {
-        document.querySelector('#nameBtn').disabled = false;
-        nameBtn.addEventListener('click', naming);
+        startBtn.addEventListener('click', startGame);
+        startBtn.disabled = false;
       }
     } else {
-      document.querySelector('#nameBtn').disabled = true;
-      nameAlert.textContent = "Your cat's name must be at least 4 characters long.";
+      startBtn.disabled = true;
+      alertUI.textContent = "Your cat's name must be at least 4 characters long.";
     }
   }
 }
 
+// checking special chars is not included
 function checkSpecialChars(nameVal) {
   const specialChars =
     '[`!@#$%^&*()_+-=[]{};\':"\\|,.<>/?~]/';
   return specialChars.split('').some((specialChar) => nameVal.includes(specialChar));
 }
 
-// naming buttons function for datas and changing the webpage
-function naming() {
-  localStorage.setItem('name', document.getElementById('name').value);
-  localStorage.setItem('path', selectedCat);
-  location.href = './pet.html';
-}
-
 // displaying cat function with hover
 function displayCat() {
-  const scottish = document.querySelector('label[for = scottish]');
-  const garfield = document.querySelector('label[for = garfield]');
-  const siamese = document.querySelector('label[for = siamese]');
-  const van = document.querySelector('label[for = van]');
-  if (scottish.matches(':hover')) {
-    fetch('./svgs/scottish.svg').then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
+  if (checkHovers) {
+    fetch(breedPaths[checkHovers()]).then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
   }
-  if (garfield.matches(':hover')) {
-    fetch('./svgs/garfield.svg').then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
-  }
-  if (siamese.matches(':hover')) {
-    fetch('./svgs/siamese.svg').then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
-  }
-  if (van.matches(':hover')) {
-    fetch('./svgs/van.svg').then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
+}
+
+// checks if labels are hovered
+function checkHovers() {
+  for (let i = 0; i < labels.length; i++) {
+    if (labels[i].matches(':hover')) {
+      return i;
+    }
   }
 }
 
 // returning the checked(clicked) cat breed for displaying
 function returnDisplay() {
-  const hoveredScottish = document.querySelector('#scottish');
-  const hoveredGarfield = document.querySelector('#garfield');
-  const hoveredSiamese = document.querySelector('#siamese');
-  const hoveredVan = document.querySelector('#van');
+  if (checkedInput) {
+    setTimeout(function () {
+      if (checkHovers() === undefined) {
+        fetch(breedPaths[checkedInput()])
+          .then(r => r.text())
+          .then(text => { hoveredCat.innerHTML = text; });
+        selectedCat = breedPaths[checkedInput()];
+      }
+    }, 500);
+  }
+}
 
-  if (hoveredScottish.matches(':checked')) {
-    fetch('./svgs/scottish.svg').then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
-    selectedCat = './svgs/scottish.svg';
+// checks which input is checked
+function checkedInput() {
+  for (let i = 0; i < inputs.length; i++) {
+    if (inputs[i].matches(':checked')) {
+      return i;
+    }
   }
-  if (hoveredGarfield.matches(':checked')) {
-    fetch('./svgs/garfield.svg').then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
-    selectedCat = './svgs/garfield.svg';
-  }
-  if (hoveredSiamese.matches(':checked')) {
-    fetch('./svgs/siamese.svg').then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
-    selectedCat = './svgs/siamese.svg';
-  }
-  if (hoveredVan.matches(':checked')) {
-    fetch('./svgs/van.svg').then(r => r.text()).then(text => { hoveredCat.innerHTML = text; });
-    selectedCat = './svgs/van.svg';
-  }
+}
+
+// a function to store starting data
+function startGame() {
+  localStorage.setItem('path', selectedCat);
+  localStorage.setItem('name', document.getElementById('name').value);
 }

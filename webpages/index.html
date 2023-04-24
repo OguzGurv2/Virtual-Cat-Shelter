@@ -3,7 +3,7 @@
 <title>Start-Page</title>
 
 <link rel="stylesheet" href="css/index.css">
-<script type="module" src="static/index.js"></script>
+<script type="module" defer src="static/index.js"></script>
 
 <body>
     <section id="header">
@@ -26,16 +26,19 @@
                             <label for="van">Turkish Van</label>
                         </fieldset>
                         <br>
-                        <g>
-                            <input id="name" class="interfaceText" type="text" placeholder="Enter a name" maxlength="20">
-                            <button id="nameBtn" disabled>Adopt Me!</button>
-                            <p id="nameAlert" class="adopt"></p>
+                        <g class="parentUI">
+                            <div class="childUI">
+                                <input id="name" class="interfaceText" type="text" placeholder="Enter a name" maxlength="20">
+                            </div>
+                            <div class="childUI">
+                                <button id="startBtn" onclick="window.location.href='./pet.html'" disabled>Adopt Me!</button>
+                            </div>
                         </g>
+                        <p id="alertUI" class="adopt"></p>
                         <br>
-                        <!-- <p class="adopt" style="position: absolute; bottom: 10px; margin-left: 182.4205px;">Already have a <a href="../login.html">virtual cat?</a></p> -->
                     </g>
             </g>
-            <g id="hoveredCat" class="child"  width="400" height="350">
+            <g id="hoveredCat" class="child"  width="250" height="250">
             </g>
         </div>
     </section>
