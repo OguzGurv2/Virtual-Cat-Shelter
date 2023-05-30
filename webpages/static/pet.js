@@ -1,20 +1,21 @@
 'use strict';
 
-import { catStats, reasons, reasonExp, timer, startTime, skeys } from './globals.js';
+import { catStats, reasons, reasonExp, timer, startTime, skeys, svals } from './globals.js';
 import { hungerVP, cleanVP, sleepVP, happinessVP, adjustAge, death } from './anims.js';
-import { cleaning, sleeping, controlButtons } from './gamemanager.js';
+import { cleaning, sleeping, controlButtons, checkStat } from './gamemanager.js';
 
 // setting handlers for other things such as btns...
-window.setInterval(cleanVP, 100);
-window.setInterval(death, 1000);
 const time = window.setInterval(timesLived, 1000);
 const age = window.setInterval(adjustAge, 1000);
 const feelControl = window.setInterval(controlStats, 100);
+
 window.addEventListener('load', handlePage);
 window.addEventListener('load', controlButtons);
 
 // base pet functions
 export function handlePage() {
+  // setting handlers for other things such as btns...
+  window.setInterval(death, 1000);
   // handles buttons
   document.querySelector('#feedBtn').addEventListener('click', () => { catStats.hunger += 4; catStats.clean -= 2; });
   document.querySelector('#cleanBtn').addEventListener('click', cleaning);
@@ -25,11 +26,26 @@ export function handlePage() {
   const petName = document.querySelector('#catName');
   const name = localStorage.getItem('name');
   petName.textContent = name.toUpperCase();
+
   const cat = document.querySelector('#cat');
   const path = localStorage.getItem('path');
   fetch(path).then(r => r.text()).then(text => { cat.innerHTML = text; });
+
   const dirts = document.querySelector('#dirts');
   fetch('./svgs/dirt.svg').then(r => r.text()).then(text => { dirts.innerHTML = text; });
+
+  for (let i = 0; i < skeys.length; i++) {
+    if (localStorage.getItem(skeys[i])) {
+      // alert(localStorage.getItem(skeys[i]));
+      if (typeof svals[i] === 'number') {
+        catStats[skeys[i]] = Math.floor(localStorage.getItem(skeys[i]));
+      } else {
+        catStats[skeys[i]] = localStorage.getItem(skeys[i]);
+      }
+      // alert(catStats[skeys[i]]);
+    }
+  }
+  setInterval(checkStat, 1000);
 }
 
 // controls decreasing and increasing of hunger, sleep, clean, and happiness over time

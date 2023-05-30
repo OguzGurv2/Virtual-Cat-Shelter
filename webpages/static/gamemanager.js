@@ -1,16 +1,29 @@
 'use strict';
 
-import { catStats, btnID } from './globals.js';
+import { catStats, btnID, skeys } from './globals.js';
 import { controlSleep, disableBtns } from './pet.js';
 import { sleepVP, buttons } from './anims.js';
 
 setInterval(restart, 1000);
 
+// saving cat's statistics
+
+export function checkStat() {
+  const svals = Object.values(catStats);
+  for (let i = 0; i < skeys.length; i++) {
+    localStorage.setItem(skeys[i], svals[i]);
+    // console.log(svals[i]);
+  }
+  // Object.keys(localStorage).forEach(function (keys) {
+  //   console.log(localStorage.getItem(keys));
+  // });
+}
+
 // button functions
 
 // button controling for spamming buttons
 
-function controlButtons() {
+export function controlButtons() {
   buttons.forEach(function event(button) {
     button.addEventListener('click', () => {
       const el = button.id;
@@ -19,7 +32,7 @@ function controlButtons() {
   });
 }
 
-function countingClicks(el) {
+export function countingClicks(el) {
   for (let i = 0; i < buttons.length; i++) {
     if (Object.values(btnID)[i] === 4) {
       buttons[i].disabled = true;
@@ -29,7 +42,7 @@ function countingClicks(el) {
   btnID[el]++;
 }
 
-function restart() {
+export function restart() {
   for (let i = 0; i < buttons.length; i++) {
     const key = Object.keys(btnID)[i];
     btnID[key] = 0;
@@ -37,7 +50,7 @@ function restart() {
 }
 
 // cleaning button
-function cleaning() {
+export function cleaning() {
   catStats.clean += 10;
   catStats.pet -= 5;
   if (catStats.dirtCount >= 1) {
@@ -58,7 +71,7 @@ const toggle = document.querySelector('#sleepBtn');
 clearInterval(sleep);
 
 // sleeping animations and button toggles
-function sleeping() {
+export function sleeping() {
   const eyes = document.getElementById('eyes');
 
   if (toggle.value === 'wakeup') {
@@ -93,7 +106,7 @@ function sleeping() {
 }
 
 // handles cat's sleeping value while button is on
-function handleSleep() {
+export function handleSleep() {
   if (catStats.sleep === 105) {
     sleeping();
   }
@@ -101,4 +114,4 @@ function handleSleep() {
   catStats.sleep = catStats.sleep + 2;
 }
 
-export { cleaning, sleeping, handleSleep, awake, controlButtons };
+export { awake };

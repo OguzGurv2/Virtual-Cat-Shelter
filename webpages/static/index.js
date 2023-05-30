@@ -109,6 +109,7 @@ function checkedInput() {
 
 // a function to store starting data
 function startGame() {
+  localStorage.clear();
   localStorage.setItem('path', selectedCat);
   localStorage.setItem('name', document.getElementById('name').value);
 }
