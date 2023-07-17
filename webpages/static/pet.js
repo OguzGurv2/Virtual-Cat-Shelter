@@ -1,21 +1,20 @@
 'use strict';
 
-import { catStats, reasons, reasonExp, timer, startTime, skeys, svals } from './globals.js';
-import { hungerVP, cleanVP, sleepVP, happinessVP, adjustAge, death } from './anims.js';
-import { cleaning, sleeping, controlButtons, checkStat } from './gamemanager.js';
+import { catStats, dReasons, reasonExp, skeys, svals } from './globals.js';
+import { hungerVP, cleanVP, sleepVP, happinessVP, death, timesLived } from './anims.js';
+import { cleaning, controlButtons, sleeping, checkStat } from './gamemanager.js';
+
 
 // setting handlers for other things such as btns...
 const time = window.setInterval(timesLived, 1000);
-const age = window.setInterval(adjustAge, 1000);
 const feelControl = window.setInterval(controlStats, 100);
 
 window.addEventListener('load', handlePage);
 window.addEventListener('load', controlButtons);
+window.setInterval(death, 1000);
 
 // base pet functions
 export function handlePage() {
-  // setting handlers for other things such as btns...
-  window.setInterval(death, 1000);
   // handles buttons
   document.querySelector('#feedBtn').addEventListener('click', () => { catStats.hunger += 4; catStats.clean -= 2; });
   document.querySelector('#cleanBtn').addEventListener('click', cleaning);
@@ -68,57 +67,16 @@ export function controlStats() {
   happinessVP();
 }
 
-// control sleep
+// controls sleep stat
 export function controlSleep() {
   catStats.sleep = Math.max(0, -0.125 + catStats.sleep);
   sleepVP();
 }
 
-// checks the time that cat died
-
-export function timesLived() {
-  let secs = '';
-  let mins = '';
-  let hrs = '';
-
-  const endTime = Date.now();
-  secs = Math.round((endTime - startTime) / 1000);
-  mins = secs / 60;
-  hrs = mins / 60;
-
-  if (catStats.isAlive === false) {
-    clearInterval(time);
-    return;
-  }
-  if (secs < 60) {
-    timer.textContent = secs + 's';
-  } else if (secs < 3600) {
-    secs = Math.round((mins - Math.floor(mins)) * 60);
-    timer.textContent = Math.floor(mins) + 'm ' + secs + 's';
-  } else if (secs < 74400) {
-    secs = Math.round((mins - Math.floor(mins)) * 60);
-    mins = Math.round((hrs - Math.floor(hrs)) * 60);
-    timer.textContent = Math.floor(hrs) + 'hrs ' + Math.floor(mins) + 'm ';
-  }
-}
-
-// gets the data for the death screen, reason of death etc.
-function deathScreen() {
-  const deathReason = document.querySelector('#death-reason');
-  // play again button
-  document.querySelector('#turn-home').addEventListener('click', () => { location.href = './index.html'; });
-  if (checkReason) {
-    deathReason.textContent = reasonExp[checkReason()];
-    return;
-  }
-
-  deathReason.textContent = 'Neglecting';
-}
-
 // checks death reason
-function checkReason() {
+export function checkReason() {
   for (let i = 0; i < reasonExp.length; i++) {
-    if (Object.values(reasons)[i] === 5) {
+    if (Object.values(dReasons)[i] === 5) {
       return i - 1;
     }
   }
@@ -136,4 +94,4 @@ function disableBtns(buttons) {
   }
 }
 
-export { hasClass, disableBtns, deathScreen, age, feelControl, time };
+export { hasClass, disableBtns, feelControl, time };

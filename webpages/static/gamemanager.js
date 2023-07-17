@@ -1,8 +1,8 @@
 'use strict';
 
 import { catStats, btnID, skeys } from './globals.js';
-import { controlSleep, disableBtns } from './pet.js';
-import { sleepVP, buttons } from './anims.js';
+import { sleepVP, buttons, sleepingAnim, wakingAnim } from './anims.js';
+import { controlSleep } from './pet.js';
 
 setInterval(restart, 1000);
 
@@ -12,11 +12,7 @@ export function checkStat() {
   const svals = Object.values(catStats);
   for (let i = 0; i < skeys.length; i++) {
     localStorage.setItem(skeys[i], svals[i]);
-    // console.log(svals[i]);
   }
-  // Object.keys(localStorage).forEach(function (keys) {
-  //   console.log(localStorage.getItem(keys));
-  // });
 }
 
 // button functions
@@ -64,44 +60,22 @@ export function cleaning() {
 
 // sleeping button
 
-// sleeping intervals for animations
-let awake = setInterval(controlSleep, 100);
-let sleep = setInterval(handleSleep, 1000);
+// sleeping intervals etc. for anims
 const toggle = document.querySelector('#sleepBtn');
+var awake = setInterval(controlSleep, 100);
+var sleep = setInterval(handleSleep, 1000);
 clearInterval(sleep);
 
-// sleeping animations and button toggles
+// sleeping functions; button toggles
 export function sleeping() {
-  const eyes = document.getElementById('eyes');
-
   if (toggle.value === 'wakeup') {
-    eyes.classList.replace('blink', 'sleeping');
-    const an1 = document.querySelector('.sleeping');
-    an1.addEventListener('animationend', () => {
-      document.querySelector('#sleepBtn').disabled = false;
-      eyes.setAttribute('transform', 'scale(1, 0.1)');
-    });
+    sleepingAnim();
     clearInterval(awake);
     sleep = setInterval(handleSleep, 1000);
-    toggle.textContent = 'Wake up';
-    toggle.value = 'sleep';
-    disableBtns(buttons);
-  } else if (toggle.value === 'sleep') {
-    eyes.classList.replace('sleeping', 'opening');
-    const an2 = document.querySelector('.opening');
-    an2.addEventListener('animationend', () => {
-      eyes.setAttribute('transform', 'scale(1, 1)');
-      eyes.classList.replace('opening', 'blink');
-      document.querySelector('#sleepBtn').disabled = false;
-    });
+  } else {
+    wakingAnim();
     clearInterval(sleep);
     awake = setInterval(controlSleep, 100);
-    toggle.textContent = 'Sleep';
-    toggle.value = 'wakeup';
-    document.querySelector('#feedBtn').disabled = false;
-    document.querySelector('#cleanBtn').disabled = false;
-    document.querySelector('#petBtn').disabled = false;
-    document.querySelector('#sleepBtn').disabled = true;
   }
 }
 
@@ -114,4 +88,4 @@ export function handleSleep() {
   catStats.sleep = catStats.sleep + 2;
 }
 
-export { awake };
+export { toggle, awake };

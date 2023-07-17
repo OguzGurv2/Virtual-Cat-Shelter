@@ -1,8 +1,8 @@
 'use strict';
 
-import { catStats, reasons, startTime, rkeys, skeys } from './globals.js';
-import { hasClass, disableBtns, deathScreen, age, feelControl, time } from './pet.js';
-import { awake } from './gamemanager.js';
+import { catStats, dReasons, startTime, rkeys, skeys, timer, reasonExp } from './globals.js';
+import { hasClass, disableBtns, feelControl, time, checkReason } from './pet.js';
+import { toggle, awake } from './gamemanager.js';
 
 // functions that adjusts stats and some animations to cat
 
@@ -57,11 +57,42 @@ function addDirt() {
   svg.appendChild(newDirt);
 }
 
-// since sleeping anims are done with toggling,
 // this function only adjusts stats to the interface
 function sleepVP() {
   const sleepBar = document.getElementById('sleepBar');
   sleepBar.value = catStats.sleep;
+}
+
+// toggling anims for sleeping
+
+
+export function sleepingAnim() {
+  const eyes = document.querySelector('#eyes');
+  eyes.classList.replace('blink', 'fall-asleep');
+  const an1 = document.querySelector('.fall-asleep');
+  an1.addEventListener('animationend', () => {
+    document.querySelector('#sleepBtn').disabled = false;
+    eyes.classList.replace('fall-asleep', 'sleeping')
+  });
+  toggle.textContent = 'Wake up';
+  toggle.value = 'sleep';
+  disableBtns(buttons);
+}
+
+export function wakingAnim() {
+  const eyes = document.querySelector('#eyes');
+  eyes.classList.replace('sleeping', 'waking');
+  const an2 = document.querySelector('.waking');
+  an2.addEventListener('animationend', () => {
+    eyes.classList.replace('waking', 'blink');
+    document.querySelector('#sleepBtn').disabled = false;
+  });
+  toggle.value = 'wakeup';
+  toggle.textContent = 'Sleep';
+  document.querySelector('#feedBtn').disabled = false;
+  document.querySelector('#cleanBtn').disabled = false;
+  document.querySelector('#petBtn').disabled = false;
+  document.querySelector('#sleepBtn').disabled = true;
 }
 
 // adjusts cat's tail anim depeding on cat's happiness
@@ -94,7 +125,7 @@ function happinessVP() {
 
 // adjusts death screen and stops all other anims
 function death() {
-  if (reasons.infection === 5 || reasons.starve === 5 || reasons.sleeplessness === 5 || catStats.isAlive === false) {
+  if (dReasons.infection === 5 || dReasons.starve === 5 || dReasons.sleeplessness === 5 || catStats.isAlive === false) {
     if (catStats.isAlive === true) {
       catStats.isAlive = false;
     }
@@ -110,7 +141,7 @@ function death() {
 
     let eyeClass;
     const eyes = document.getElementById('eyes');
-    const classes = ['blink', 'sleeping', 'opening'];
+    const classes = ['blink', 'sleeping', 'waking'];
 
     for (let i = 0, j = classes.length; i < j; i++) {
       if (hasClass(eyes, classes[i])) {
@@ -121,7 +152,7 @@ function death() {
 
     eyes.classList.replace(eyeClass, 'hidden');
     document.querySelector('#dead-eye').classList.remove('hidden');
-    document.querySelector('#dimmer').classList.add('dimmer');
+    document.querySelector('#death-screen').classList.add('dimmer');
     document.querySelector('#death-screen').classList.replace('hidden', 'death-screen');
     deathScreen();
     return;
@@ -129,16 +160,24 @@ function death() {
 
   for (let i = 0; i < 3; i++) {
     if (catStats[skeys[i]] === 0) {
-      reasons[rkeys[i]]++;
+      dReasons[rkeys[i]]++;
     }
   }
 }
 
-function adjustAge() {
+// checks the time that cat died also
+// displays age of the cat
+
+export function timesLived() {
+  let secs = '';
+  let mins = '';
+  let hrs = '';
+
   const endTime = Date.now();
   const age = document.querySelector('#age');
-  const secs = Math.round((endTime - startTime) / 1000);
-  const mins = secs / 60;
+  secs = Math.round((endTime - startTime) / 1000);
+  mins = secs / 60;
+  hrs = mins / 60;
 
   if (Math.floor(mins) === 5) {
     age.textContent = 'Kitten';
@@ -155,6 +194,34 @@ function adjustAge() {
   if (Math.floor(mins) === 95) {
     age.textContent = 'Super Senior';
   }
+
+  if (catStats.isAlive === false) {
+    clearInterval(time);
+    return;
+  }
+  if (secs < 60) {
+    timer.textContent = secs + 's';
+  } else if (secs < 3600) {
+    secs = Math.round((mins - Math.floor(mins)) * 60);
+    timer.textContent = Math.floor(mins) + 'm ' + secs + 's';
+  } else if (secs < 74400) {
+    secs = Math.round((mins - Math.floor(mins)) * 60);
+    mins = Math.round((hrs - Math.floor(hrs)) * 60);
+    timer.textContent = Math.floor(hrs) + 'hrs ' + Math.floor(mins) + 'm ';
+  }
 }
 
-export { hungerVP, cleanVP, sleepVP, happinessVP, buttons, death, adjustAge };
+// gets the data for the death screen, reason of death etc.
+export function deathScreen() {
+  const deathReason = document.querySelector('#death-reason');
+  // play again button
+  document.querySelector('#turn-home').addEventListener('click', () => { location.href = './index.html'; });
+  if (checkReason) {
+    deathReason.textContent = reasonExp[checkReason()];
+    return;
+  }
+
+  deathReason.textContent = 'Neglecting';
+}
+
+export { hungerVP, cleanVP, sleepVP, happinessVP, buttons, death };

@@ -30,7 +30,7 @@ const skeys = Object.keys(catStats);
 const svals = Object.values(catStats);
 
 // creating death-reasons and string to manipulate them
-const reasons = {
+const dReasons = {
   starve: 0,
   infection: 0,
   sleeplessness: 0,
@@ -42,7 +42,7 @@ const reasonExp = [
   'Lack of sleep',
 ];
 
-const rkeys = Object.keys(reasons);
+const rkeys = Object.keys(dReasons);
 
 // creating btnID to manipulate them
 
@@ -53,4 +53,6 @@ const btnID = {
   petBtn: 0,
 };
 
-export { catStats, reasons, reasonExp, timer, startTime, rkeys, skeys, btnID, breedPaths, svals };
+
+
+export { catStats, dReasons, reasonExp, timer, startTime, rkeys, skeys, btnID, breedPaths, svals };
