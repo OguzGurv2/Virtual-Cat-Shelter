@@ -4,12 +4,28 @@
 
 <link rel="stylesheet" href="css/index.css">
 <script type="module" defer src="static/index.js"></script>
+<script src="static/pagemanager.js"></script>
 <script src="https://kit.fontawesome.com/13e3511e22.js" crossorigin="anonymous"></script>
 
 <body>
     <section class="top-bar">
         <h1>VIRTUAL CAT SHELTER</h1>
-        <button class="color-mode"><i class="fa-solid fa-moon"></i></button>
+        <button class="color-mode"><i class="fa-solid fa-moon">
+            <a class="dark-mode"
+            data-text= "#fafafa"
+            data-background="#050505"
+            data-primary="#157456"
+            data-secondary="#082b20"
+            data-accent="#7ee7c6"
+            ></a>
+            <a class="light-mode"
+            data-text= "#051a13";
+            data-background= "#e5faf4";
+            data-primary= "#157456";
+            data-secondary= "#b1f1dd"; 
+            data-accent= "#21b586";
+            ></a>
+        </i></button>
     </section>
     <section class="content">
         

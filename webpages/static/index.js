@@ -5,7 +5,7 @@ import { breedPaths } from './globals.js';
 // index page functions
 
 document.addEventListener('DOMContentLoaded', function() {
-  
+
   document.getElementById('name').addEventListener('keyup', checkInput);
   
   // defining the selected cat breed and cat's name

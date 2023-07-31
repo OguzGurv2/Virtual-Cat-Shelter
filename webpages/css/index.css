@@ -42,10 +42,11 @@ hr {
 .color-mode {
     position: absolute;
     right: 25px;
-    font-size: 25px;
-    background-color: var(--secondary);
+    background: none;
     color: var(--accent);
     border: 0;
+    width: fit-content;
+    font-size: 25px;
 }
 
 .content {
@@ -64,13 +65,14 @@ hr {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    align-items: center;
     gap: 50px;
-    align-items: flex-start;
 }
 
 #text-content {
     display: flex;
     flex-direction: column;
+    width: auto;
 }
 
 #intro {
@@ -126,6 +128,9 @@ input[type="radio"]{
     display: flex;
     justify-content: center;
     align-items: center;
+    border: solid 2px var(--accent);
+    max-width: 400px;
+    width: auto;
 }
 
 .svg-content {
@@ -133,9 +138,7 @@ input[type="radio"]{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 400px;
     height: auto;
-    border: solid 2px var(--accent);
     background-position: center;
     background-size: cover;
 }
@@ -176,4 +179,23 @@ input[type="text"] {
     padding-top: 10px;
     font-size: 12.5px;
     color: var(--primary);
+}
+
+@media screen and (max-width: 768px ) {
+    .content-body {
+        gap: 0px;
+        grid-template-columns: 1fr;
+        padding: 24px 0px;
+    }
+
+    .content {
+        padding-top: 0px;
+        height: auto;
+    }
+
+    .svg-container {
+        justify-self: center;
+        min-width: auto;
+        width: 500px;
+    }
 }
