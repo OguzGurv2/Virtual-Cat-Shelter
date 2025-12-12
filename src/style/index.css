@@ -67,6 +67,38 @@ section.hero {
     padding: 2rem 4rem;
     border-radius: 2.5rem;
     font-size: 2rem;
+    position: relative; 
+    transition: all 0.2s ease-in-out; 
+}
+
+.hero-buttons button.loading {
+    color: transparent;
+}
+
+.hero-buttons button.loading::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -1.5rem; 
+    margin-top: -1.5rem; 
+    width: 3rem;
+    height: 3rem;
+    border: 5px solid rgba(255, 255, 255, 0.5);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.hero-buttons .btn-secondary.loading::after {
+    border: 5px solid rgba(0, 0, 0, 0.2);
+    border-top-color: var(--text);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .hero-buttons .btn-primary {
@@ -81,15 +113,20 @@ section.hero {
 }
 
 .hero .hero-carts {
-    margin-left: 10%;
     width: 90%;
-    overflow-x: hidden;
+    overflow-x: auto;
+    margin-left: 10%;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;  
+    scrollbar-width: none; 
     display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
-.hero-carts li {
+.hero .hero-carts::-webkit-scrollbar {
+    display: none;
+}
+
+.hero-carts ul {
     list-style: none;
     display: flex;
     flex-direction: row;
@@ -97,12 +134,13 @@ section.hero {
 
 .hero-carts .cart-container {
     gap: 2rem;
-    overflow-x: hidden;
     width: max-content;
-    align-self: flex-start;
+    align-items: center;
+    height: 38rem;
+    padding: 0 1%;
 }
 
-.cart-container ul {
+.cart-container li {
     height: 35rem;
     width: 30rem;
     border-radius: 2.5rem;
@@ -111,6 +149,10 @@ section.hero {
     justify-content: center;
     padding: 1rem 0 0 0;
     gap: 2rem;
+}
+
+.cart-container li:last-child {
+    margin-right: 5%;
 }
 
 .cart-container img {
@@ -154,13 +196,23 @@ footer p {
     line-height: 1.5;
 }
 
-footer li {
+footer ul {
     list-style: none;
     display: flex;
     gap: 1rem;
     margin-top: 2rem;
+    transition: scale 0.3s ease-in-out;
 }
 
-footer li ul {
+footer li {
     font-size: 5rem;
+}
+
+footer i {
+    color: var(--text);
+}
+
+.highlight {
+    scale: 1.01;
+    box-shadow: 0px 0px 0px 5px rgba(0, 0, 0, 0.1);
 }
