@@ -3,8 +3,10 @@ addEventListener('DOMContentLoaded', () => {
 });
 
 function init() {
-  observeCardContainer();
   setupButtonLoaders();
+  setTimeout(() => {
+    observeCardContainer();
+  }, 500);
 }
 
 function observeCardContainer() {
@@ -14,19 +16,20 @@ function observeCardContainer() {
   if (!scrollContainer || cards.length === 0) return;
 
   const callback = (entries) => {
-    entries.forEach((entry) => {
-      cards.forEach((card) => card.classList.remove('highlight'));
+    const intersectingEntry = entries.find(entry => entry.isIntersecting);
 
-      if (entry.isIntersecting) {
-        entry.target.classList.add('highlight');
-      }
-    });
+    if (intersectingEntry) {
+      cards.forEach((card) => card.classList.remove('highlight'));
+      intersectingEntry.target.classList.add('highlight');
+    }
   };
 
   const options = {
     root: scrollContainer,
-    rootMargin: '0px',
-    threshold: 1.0,
+    // This creates a vertical "line" in the center of the container.
+    // A card will only intersect when it crosses this line.
+    rootMargin: '0px -40% 0px -40%',
+    threshold: 0.1,
   };
 
   const observer = new IntersectionObserver(callback, options);

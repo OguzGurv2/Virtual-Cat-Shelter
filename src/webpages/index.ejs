@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<title>VCS | Home</title>
+<html lang="en">
 
-<link rel="stylesheet" href="src/style/index.css">
-<script type="module" src="src/static/index.js"></script>
-<script src="https://kit.fontawesome.com/ced748779b.js" crossorigin="anonymous"></script>
+<head>
+    <meta charset="utf-8">
+    <title>VCS | <%= title %>
+    </title>
+    <link rel="stylesheet" href="/src/style/index.css">
+    <script type="module" src="/src/static/index.js"></script>
+    <script src="https://kit.fontawesome.com/ced748779b.js" crossorigin="anonymous"></script>
+</head>
 
 <body>
     <section class="header">
         <h1>Virtual Cat Shelter</h1>
     </section>
+
     <section class="hero">
         <div class="hero-header">
             <h1>
@@ -48,25 +53,5 @@
             </p>
         </div>
     </section>
-    <footer>
-        <div></div>
-        <p>© 2025 Oguz Gur <br> All rights reserved.</p>
-        <ul>
-            <li>
-                <a href="https://www.linkedin.com/in/oguz-gur/" target="_blank" rel="noopener noreferrer">
-                    <i class="fa-brands fa-square-linkedin"></i>
-                </a>
-            </li>
-            <li>
-                <a href="https://github.com/OguzGurv2/Virtual-Cat-Shelter" target="_blank" rel="noopener noreferrer">
-                    <i class="fa-brands fa-square-github"></i>
-                </a>
-            </li>
-            <li>
-                <a href="https://www.instagram.com/ouzdotexe/" target="_blank" rel="noopener noreferrer">
-                    <i class="fa-brands fa-square-instagram"></i>
-                </a>
-            </li>
-        </ul>
-    </footer>
-</body>
+
+<%- include('partials/footer') %>

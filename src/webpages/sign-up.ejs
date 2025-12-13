@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>VCS | <%= title %>
+    </title>
+    <link rel="stylesheet" href="/src/style/access.css">
+    <script src="https://kit.fontawesome.com/ced748779b.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <section class="auth-form-container">
+        <form class="auth-form" action="/sign-up" method="POST">
+            <h2>Create Account</h2>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+            </div>
+            <button type="submit" class="btn-primary">Sign Up</button>
+            <div class="form-links">
+                <p>Already have an account?</p>
+                <a href="/log-in">Log In <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
+            </div>
+        </form>
+    </section>
+
+<%- include('partials/footer') %>
